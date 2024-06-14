@@ -1,14 +1,28 @@
 'use client'
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function page() {
 
   const [img, $img] = useState('puppy-eyes');
   const [how, $how] = useState(false);
   const [p, $p] = useState(null);
-  const [isMobile, $isMobile] = useState(window.innerWidth < 768)
+ const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const updteImg = (im) => {
     $img(im);
